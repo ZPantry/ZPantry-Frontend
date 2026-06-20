@@ -6,6 +6,53 @@ export function required(value) {
   return String(value ?? "").trim().length > 0;
 }
 
+export function validateLoginForm(form) {
+  const errors = {};
+  const email = form.email?.trim() || "";
+  const password = form.password || "";
+
+  if (!email) errors.email = "Vui lòng nhập email.";
+  else if (!validateEmail(email)) errors.email = "Email chưa đúng định dạng.";
+
+  if (!password) errors.password = "Vui lòng nhập mật khẩu.";
+  else if (password.length < 8) errors.password = "Mật khẩu cần ít nhất 8 ký tự.";
+
+  return errors;
+}
+
+export function validateRegisterForm(form) {
+  const errors = {};
+  const fullName = form.fullName?.trim() || "";
+  const email = form.email?.trim() || "";
+  const password = form.password || "";
+  const confirm = form.confirm || "";
+
+  if (!fullName) errors.fullName = "Vui lòng nhập họ tên.";
+  else if (fullName.length < 2) errors.fullName = "Họ tên cần có ít nhất 2 ký tự.";
+  else if (fullName.length > 80) errors.fullName = "Họ tên không nên dài quá 80 ký tự.";
+
+  if (!email) errors.email = "Vui lòng nhập email.";
+  else if (!validateEmail(email)) errors.email = "Email chưa đúng định dạng.";
+
+  if (!password) errors.password = "Vui lòng nhập mật khẩu.";
+  else if (password.length < 8) errors.password = "Mật khẩu cần ít nhất 8 ký tự.";
+
+  if (!confirm) errors.confirm = "Vui lòng nhập lại mật khẩu.";
+  else if (confirm !== password) errors.confirm = "Mật khẩu nhập lại chưa khớp.";
+
+  return errors;
+}
+
+export function validateOtpForm(form) {
+  const errors = {};
+  const otpCode = form.otpCode?.trim() || "";
+
+  if (!otpCode) errors.otpCode = "Vui lòng nhập mã OTP.";
+  else if (!/^\d{6}$/.test(otpCode)) errors.otpCode = "Mã OTP gồm 6 chữ số.";
+
+  return errors;
+}
+
 export function calculateAge(birthDate, now = new Date()) {
   if (!birthDate) return "";
   const birth = new Date(`${birthDate}T00:00:00`);

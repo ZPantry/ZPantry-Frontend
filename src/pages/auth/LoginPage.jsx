@@ -5,7 +5,7 @@ import { GoogleSignInButton } from "../../components/auth/GoogleSignInButton";
 import { Field, inputClass } from "../../components/ui/Fields";
 import { useToast } from "../../components/ui/Toast";
 import { authService } from "../../services/authService";
-import { validateEmail } from "../../utils/validation";
+import { validateLoginForm } from "../../utils/validation";
 import { AuthShell } from "./AuthShell";
 
 export function LoginPage() {
@@ -16,24 +16,17 @@ export function LoginPage() {
   const navigate = useNavigate();
   const toast = useToast();
 
-  const submit = (event) => {
+  const submit = async (event) => {
     event.preventDefault();
 
-    const next = {};
-
-    if (!form.email) next.email = "Vui lòng nhập email.";
-    else if (!validateEmail(form.email)) next.email = "Email chưa đúng định dạng.";
-
-    if (!form.password) next.password = "Vui lòng nhập mật khẩu.";
-    else if (form.password.length < 6) next.password = "Mật khẩu cần ít nhất 6 ký tự.";
-
+    const next = validateLoginForm(form);
     setErrors(next);
     if (Object.keys(next).length) return;
 
     setLoading(true);
 
     try {
-      const session = authService.login(form.email, form.password, form.remember);
+      const session = await authService.login(form.email, form.password, form.remember);
       toast.show("Đăng nhập thành công.");
       navigate(session.role === "admin" ? "/admin" : "/dashboard");
     } catch (error) {
@@ -65,6 +58,7 @@ export function LoginPage() {
             value={form.email}
             onChange={(event) => setForm({ ...form, email: event.target.value })}
             placeholder="ban@example.com"
+            autoComplete="email"
           />
         </Field>
 
@@ -75,7 +69,8 @@ export function LoginPage() {
               type={show ? "text" : "password"}
               value={form.password}
               onChange={(event) => setForm({ ...form, password: event.target.value })}
-              placeholder="Tối thiểu 6 ký tự"
+              placeholder="Tối thiểu 8 ký tự"
+              autoComplete="current-password"
             />
 
             <button
@@ -113,15 +108,6 @@ export function LoginPage() {
           Đăng ký ngay
         </Link>
       </p>
-
-      <div className="auth-demo-accounts mt-3 rounded-xl bg-orange-50/90 p-3 text-xs leading-5 text-slate-700">
-        <p>
-          <strong>Admin:</strong> admin@zpantry.com / 123456
-        </p>
-        <p>
-          <strong>Người dùng:</strong> user@zpantry.com / 123456
-        </p>
-      </div>
     </AuthShell>
   );
 }
