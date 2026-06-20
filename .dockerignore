@@ -1,0 +1,10 @@
+node_modules
+dist
+.git
+.vite.pid
+npm-debug.log
+Dockerfile
+docker-compose.yml
+.env
+.env.*
+!.env.example
