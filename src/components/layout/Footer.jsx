@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import zPantryLogo from "../../assets/z-pantry-logo-horizontal.png";
 import { AppLink } from "../ui/AppLink";
 
 export function Footer() {
@@ -7,8 +8,7 @@ export function Footer() {
       <div className="container footer-grid">
         <div>
           <Link className="brand" to="/#top">
-            <span className="brand-mark" />
-            <span>Z-Pantry</span>
+            <img className="brand-logo" src={zPantryLogo} alt="Z-Pantry" />
           </Link>
           <p>Nấu thông minh hơn. Lãng phí ít hơn. Lập kế hoạch bằng AI.</p>
         </div>

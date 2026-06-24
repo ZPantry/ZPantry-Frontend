@@ -1,5 +1,6 @@
-import { ChefHat, Sparkles } from "lucide-react";
+import {  Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
+import zPantryLogo from "../../assets/z-pantry-logo-horizontal.png";
 
 const foodImages = [
   {
@@ -28,14 +29,11 @@ export function AuthShell({ title, subtitle, children }) {
   return (
     <main className="auth-page relative grid min-h-screen overflow-hidden px-4 py-3">
       <div className="auth-page-bg" aria-hidden="true" />
-
+      <div className="auth-page-header relative z-10">
       <Link to="/" className="relative z-10 mx-auto mb-3 flex w-fit items-center gap-3 font-heading text-base font-black">
-        <span className="grid h-9 w-9 place-items-center rounded-2xl bg-orange-500 text-white">
-          <ChefHat size={19} />
-        </span>
-        Z-Pantry
+        <img className="h-12 w-auto" src={zPantryLogo} alt="Z-Pantry" />
       </Link>
-
+      </div>
       <section className="auth-card relative z-10 mx-auto grid w-full max-w-[900px] overflow-hidden rounded-[24px] border border-white/75 bg-white/88 shadow-xl shadow-orange-200/70 backdrop-blur-xl lg:grid-cols-[0.82fr_1fr]">
         <aside className="auth-visual hidden bg-[#24170f] p-4 text-white lg:block">
           <div className="flex h-full flex-col justify-between rounded-[20px] border border-white/12 bg-[linear-gradient(145deg,rgba(249,115,22,.24),rgba(22,163,74,.18))] p-5">

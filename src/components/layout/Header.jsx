@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
+import zPantryLogo from "../../assets/z-pantry-logo-horizontal.png";
 import { navItems } from "../../data/landingContent";
 import { AppLink } from "../ui/AppLink";
 
@@ -46,8 +47,7 @@ export function Header() {
     <header ref={headerRef} className="site-header">
       <nav className="navbar" aria-label="Điều hướng chính">
         <Link className="brand" to="/#top" aria-label="Về trang chủ Z-Pantry">
-          <span className="brand-mark" />
-          <span>Z-Pantry</span>
+          <img className="brand-logo" src={zPantryLogo} alt="" />
         </Link>
 
         <button

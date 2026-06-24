@@ -145,9 +145,8 @@
     font-size: 86%;
   }
 
-  .site-header .brand-mark {
-    width: 28px;
-    height: 28px;
+  .site-header .brand-logo {
+    width: clamp(118px, 30vw, 152px);
   }
 
   .site-header .nav-cta,

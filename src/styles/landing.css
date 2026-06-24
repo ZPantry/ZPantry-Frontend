@@ -117,20 +117,16 @@ p {
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
   font-family: var(--font-heading);
   font-weight: 800;
   font-size: 1.15rem;
 }
 
-.brand-mark {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background:
-    radial-gradient(circle at 66% 28%, #ffe2bc 0 16%, transparent 17%),
-    linear-gradient(135deg, var(--orange), #ffba68 55%, var(--green));
-  box-shadow: 0 10px 26px rgba(255, 138, 61, 0.32);
+.brand-logo {
+  display: block;
+  width: clamp(132px, 15vw, 178px);
+  height: 5vh;
+  object-fit: contain;
 }
 
 .nav-links {
