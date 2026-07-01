@@ -7,11 +7,9 @@ import "./styles/tailwind.css";
 import "./styles/landing.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID || ""}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </GoogleOAuthProvider>
-  </React.StrictMode>
+  <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID || ""}>
+    <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+      <App />
+    </BrowserRouter>
+  </GoogleOAuthProvider>
 );

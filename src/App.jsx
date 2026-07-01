@@ -6,6 +6,10 @@ import { ProtectedRoute } from "./routes/ProtectedRoute.jsx";
 import { ToastProvider } from "./components/ui/Toast.jsx";
 import { ScrollProgress } from "./components/ui/ScrollProgress.jsx";
 import { AdminDashboard } from "./pages/admin/AdminDashboard.jsx";
+import { AdminIngredientsPage } from "./pages/admin/AdminIngredientsPage.jsx";
+import { AdminPantryPage } from "./pages/admin/AdminPantryPage.jsx";
+import { AdminRecommendationsPage } from "./pages/admin/AdminRecommendationsPage.jsx";
+import { AdminRecipesPage } from "./pages/admin/AdminRecipesPage.jsx";
 import { AdminUsersPage } from "./pages/admin/AdminUsersPage.jsx";
 import { LoginPage } from "./pages/auth/LoginPage.jsx";
 import { RegisterPage } from "./pages/auth/RegisterPage.jsx";
@@ -38,6 +42,10 @@ export default function App() {
           <Route element={<AppLayout />}>
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/users" element={<AdminUsersPage />} />
+            <Route path="/admin/ingredients" element={<AdminIngredientsPage />} />
+            <Route path="/admin/recipes" element={<AdminRecipesPage />} />
+            <Route path="/admin/pantry" element={<AdminPantryPage />} />
+            <Route path="/admin/recommendations" element={<AdminRecommendationsPage />} />
           </Route>
         </Route>
 

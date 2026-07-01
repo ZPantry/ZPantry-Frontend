@@ -18,6 +18,17 @@ function getApiMessage(error, fallback = "Có lỗi xảy ra. Vui lòng thử l�
   return error?.response?.data?.message || error?.response?.data?.title || error?.message || fallback;
 }
 
+function unwrapApiData(body) {
+  if (body && typeof body === "object" && "success" in body) {
+    if (body.success === false) {
+      throw new Error(body.message || "Yêu cầu không thành công.");
+    }
+    return body.data ?? {};
+  }
+
+  return body;
+}
+
 function normalizeSession(data, remember = true) {
   return {
     id: data.userId,
@@ -64,7 +75,7 @@ export const authService = {
         email: email.trim(),
         password
       });
-      const session = normalizeSession(response.data, remember);
+      const session = normalizeSession(unwrapApiData(response.data), remember);
       return write(keys.auth, session);
     } catch (error) {
       throw new Error(getApiMessage(error, "Email hoặc mật khẩu không đúng."));
@@ -117,7 +128,7 @@ export const authService = {
         email: email.trim(),
         password
       });
-      return response.data;
+      return unwrapApiData(response.data);
     } catch (error) {
       throw new Error(getApiMessage(error, "Không thể đăng ký tài khoản."));
     }
@@ -128,7 +139,7 @@ export const authService = {
         email: email.trim(),
         otpCode: otpCode.trim()
       });
-      return response.data;
+      return unwrapApiData(response.data);
     } catch (error) {
       throw new Error(getApiMessage(error, "Mã OTP không hợp lệ hoặc đã hết hạn."));
     }
@@ -137,7 +148,7 @@ export const authService = {
     try {
       const response = await apiClient.post("/api/Auth/refresh-token", { refreshToken });
       const current = getAuthSession();
-      const session = normalizeSession(response.data, current?.remember ?? true);
+      const session = normalizeSession(unwrapApiData(response.data), current?.remember ?? true);
       return write(keys.auth, session);
     } catch (error) {
       localStorage.removeItem(keys.auth);

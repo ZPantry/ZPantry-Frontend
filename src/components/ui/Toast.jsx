@@ -1,13 +1,15 @@
 import { createContext, useContext, useMemo, useState } from "react";
 
 const ToastContext = createContext(null);
+let toastId = 0;
 
 export function ToastProvider({ children }) {
   const [toasts, setToasts] = useState([]);
   const api = useMemo(
     () => ({
       show(message, type = "success") {
-        const id = Date.now();
+        toastId += 1;
+        const id = `${Date.now()}-${toastId}`;
         setToasts((items) => [...items, { id, message, type }]);
         setTimeout(() => setToasts((items) => items.filter((item) => item.id !== id)), 2800);
       }
