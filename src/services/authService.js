@@ -4,7 +4,7 @@ import { ensureSeedData, keys, read, write } from "./storage";
 ensureSeedData();
 
 export const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || "",
+  baseURL: import.meta.env.VITE_API_BASE_URL || "https://zpantry-java-backend.onrender.com",
   headers: {
     "Content-Type": "application/json"
   }

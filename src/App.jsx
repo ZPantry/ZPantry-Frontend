@@ -19,6 +19,7 @@ import { ProfilePage } from "./pages/profile/ProfilePage.jsx";
 import { EditProfilePage } from "./pages/profile/EditProfilePage.jsx";
 import { DownloadPage } from "./pages/DownloadPage.jsx";
 import { LandingPage } from "./pages/LandingPage.jsx";
+import { PaymentReturnPage } from "./pages/PaymentReturnPage.jsx";
 
 export default function App() {
   return (
@@ -30,6 +31,8 @@ export default function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/download" element={<DownloadPage />} />
           <Route path="/download.html" element={<DownloadPage />} />
+          <Route path="/payment/success" element={<PaymentReturnPage outcome="success" />} />
+          <Route path="/payment/cancel" element={<PaymentReturnPage outcome="cancel" />} />
         </Route>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
