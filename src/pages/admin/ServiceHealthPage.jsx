@@ -2,7 +2,7 @@ import { Activity, CheckCircle2, CircleAlert, RefreshCw, Server, WifiOff } from 
 import { useCallback, useEffect, useRef, useState } from "react";
 
 const BACKEND_URL = import.meta.env.VITE_API_BASE_URL || "https://zpantry-java-backend.onrender.com";
-const AI_URL = import.meta.env.VITE_AI_SERVICE_URL || "";
+const AI_URL = import.meta.env.VITE_AI_SERVICE_URL || "https://zpantry-aiservice.onrender.com";
 const POLL_INTERVAL_MS = 5_000;
 
 function endpoint(baseUrl, path) {
