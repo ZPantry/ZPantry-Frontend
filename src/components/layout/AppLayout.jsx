@@ -1,4 +1,4 @@
-import { BarChart3, CalendarDays, ChefHat, Home, LogOut, Menu, Package, Sparkles, User, Users, X } from "lucide-react";
+import { Activity, BarChart3, CalendarDays, ChefHat, Home, LogOut, Menu, Package, Sparkles, User, Users, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { authService } from "../../services/authService";
@@ -13,7 +13,8 @@ const userLinks = [
 
 const adminLinks = [
   { to: "/admin", label: "Tổng quan", icon: BarChart3 },
-  { to: "/admin/users", label: "Người dùng", icon: Users }
+  { to: "/admin/users", label: "Người dùng", icon: Users },
+  { to: "/admin/service-health", label: "Trạng thái dịch vụ", icon: Activity }
 ];
 
 export function AppLayout() {

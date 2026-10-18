@@ -7,6 +7,7 @@ import { ToastProvider } from "./components/ui/Toast.jsx";
 import { ScrollProgress } from "./components/ui/ScrollProgress.jsx";
 import { AdminDashboard } from "./pages/admin/AdminDashboard.jsx";
 import { AdminUsersPage } from "./pages/admin/AdminUsersPage.jsx";
+import { ServiceHealthPage } from "./pages/admin/ServiceHealthPage.jsx";
 import { LoginPage } from "./pages/auth/LoginPage.jsx";
 import { RegisterPage } from "./pages/auth/RegisterPage.jsx";
 import { UserDashboard } from "./pages/user/UserDashboard.jsx";
@@ -41,6 +42,7 @@ export default function App() {
           <Route element={<AppLayout />}>
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/users" element={<AdminUsersPage />} />
+            <Route path="/admin/service-health" element={<ServiceHealthPage />} />
           </Route>
         </Route>
 
