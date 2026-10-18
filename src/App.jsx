@@ -37,6 +37,7 @@ export default function App() {
         </Route>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/service-health" element={<ServiceHealthPage />} />
 
         <Route element={<ProtectedRoute roles={["admin", "super_admin"]} />}>
           <Route element={<AppLayout />}>

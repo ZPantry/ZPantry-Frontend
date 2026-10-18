@@ -56,7 +56,7 @@ export function ServiceHealthPage() {
           <div>
             <p className="text-xs font-black uppercase tracking-[0.18em] text-orange-500">Vận hành hệ thống</p>
             <h2 className="mt-2 font-heading text-3xl font-black text-slate-950">Trạng thái dịch vụ</h2>
-            <p className="mt-2 max-w-2xl text-slate-600">Tự kiểm tra Backend và AI Service mỗi 5 giây. Nút bên cạnh sẽ gửi health request đến cả hai dịch vụ để đánh thức và kiểm tra lại.</p>
+            <p className="mt-2 max-w-2xl text-slate-600">Trang công khai này tự kiểm tra Backend và AI Service mỗi 5 giây. Nút bên cạnh gửi health request đến cả hai dịch vụ để đánh thức và kiểm tra lại.</p>
           </div>
           <button onClick={checkHealth} disabled={checking} className="inline-flex items-center justify-center gap-2 rounded-2xl bg-slate-950 px-5 py-3 font-black text-white transition hover:bg-slate-800 disabled:cursor-wait disabled:opacity-60">
             <RefreshCw size={18} className={checking ? "animate-spin" : ""} />
