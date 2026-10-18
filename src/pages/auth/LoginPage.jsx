@@ -28,7 +28,7 @@ export function LoginPage() {
     try {
       const session = await authService.login(form.email, form.password, form.remember);
       toast.show("Đăng nhập thành công.");
-      navigate(session.role === "admin" ? "/admin" : "/dashboard");
+      navigate(["admin", "super_admin"].includes(session.role) ? "/admin/service-health" : "/dashboard");
     } catch (error) {
       toast.show(error.message, "error");
     } finally {

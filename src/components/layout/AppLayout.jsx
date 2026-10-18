@@ -22,7 +22,8 @@ export function AppLayout() {
   const navigate = useNavigate();
   const location = useLocation();
   const auth = authService.current();
-  const links = auth?.role === "admin" ? adminLinks : userLinks;
+  const isAdmin = ["admin", "super_admin"].includes(auth?.role);
+  const links = isAdmin ? adminLinks : userLinks;
 
   useEffect(() => setOpen(false), [location.pathname]);
 
@@ -35,7 +36,7 @@ export function AppLayout() {
     <div className="min-h-screen bg-[#fffaf2] text-slate-900">
       <aside className={`fixed inset-y-0 left-0 z-50 w-72 border-r border-orange-100 bg-white/95 p-5 shadow-xl backdrop-blur transition lg:translate-x-0 ${open ? "translate-x-0" : "-translate-x-full"}`}>
         <div className="mb-8 flex items-center justify-between">
-          <Link to={auth?.role === "admin" ? "/admin" : "/dashboard"} className="flex items-center gap-3 font-heading text-xl font-black">
+          <Link to={isAdmin ? "/admin" : "/dashboard"} className="flex items-center gap-3 font-heading text-xl font-black">
             <span className="grid h-11 w-11 place-items-center rounded-2xl bg-orange-500 text-white"><ChefHat size={22} /></span>
             Z-Pantry
           </Link>
@@ -62,7 +63,7 @@ export function AppLayout() {
         <header className="sticky top-0 z-40 flex h-20 items-center justify-between border-b border-orange-100 bg-[#fffaf2]/85 px-4 backdrop-blur lg:px-8">
           <button className="rounded-2xl bg-white p-3 shadow lg:hidden" onClick={() => setOpen(true)} aria-label="Mở menu"><Menu size={22} /></button>
           <div>
-            <p className="text-xs font-black uppercase tracking-[0.18em] text-orange-500">{auth?.role === "admin" ? "Khu vực quản trị" : "Không gian bữa ăn"}</p>
+            <p className="text-xs font-black uppercase tracking-[0.18em] text-orange-500">{isAdmin ? "Khu vực quản trị" : "Không gian bữa ăn"}</p>
             <h1 className="font-heading text-xl font-black text-slate-900 sm:text-2xl">Xin chào, {auth?.name}</h1>
           </div>
           <Link to="/profile" className="hidden rounded-full bg-white px-4 py-2 text-sm font-bold shadow sm:block">{auth?.email}</Link>

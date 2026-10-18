@@ -64,7 +64,10 @@ export const authService = {
         email: email.trim(),
         password
       });
-      const session = normalizeSession(response.data, remember);
+      if (!response.data?.success || !response.data?.data) {
+        throw new Error(response.data?.message || "Đăng nhập thất bại.");
+      }
+      const session = normalizeSession(response.data.data, remember);
       return write(keys.auth, session);
     } catch (error) {
       throw new Error(getApiMessage(error, "Email hoặc mật khẩu không đúng."));
