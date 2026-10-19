@@ -1,4 +1,4 @@
-import { Activity, BarChart3, CalendarDays, ChefHat, Home, LogOut, Menu, Package, Sparkles, User, Users, X } from "lucide-react";
+import { Activity, BarChart3, CalendarDays, ChefHat, Home, LogOut, Menu, Package, Sparkles, User, Users, Wallet, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { authService } from "../../services/authService";
@@ -14,6 +14,8 @@ const userLinks = [
 const adminLinks = [
   { to: "/admin", label: "Tổng quan", icon: BarChart3 },
   { to: "/admin/users", label: "Người dùng", icon: Users },
+  { to: "/admin/catalog", label: "Danh mục", icon: Package },
+  { to: "/admin/revenue", label: "Doanh thu", icon: Wallet },
   { to: "/admin/service-health", label: "Trạng thái dịch vụ", icon: Activity }
 ];
 
@@ -22,7 +24,7 @@ export function AppLayout() {
   const navigate = useNavigate();
   const location = useLocation();
   const auth = authService.current();
-  const isAdmin = ["admin", "super_admin"].includes(auth?.role);
+  const isAdmin = ["admin", "super_admin"].includes(auth?.role?.toLowerCase());
   const links = isAdmin ? adminLinks : userLinks;
 
   useEffect(() => setOpen(false), [location.pathname]);
@@ -66,7 +68,7 @@ export function AppLayout() {
             <p className="text-xs font-black uppercase tracking-[0.18em] text-orange-500">{isAdmin ? "Khu vực quản trị" : "Không gian bữa ăn"}</p>
             <h1 className="font-heading text-xl font-black text-slate-900 sm:text-2xl">Xin chào, {auth?.name}</h1>
           </div>
-          <Link to="/profile" className="hidden rounded-full bg-white px-4 py-2 text-sm font-bold shadow sm:block">{auth?.email}</Link>
+          <span className="hidden rounded-full bg-white px-4 py-2 text-sm font-bold shadow sm:block">{auth?.email}</span>
         </header>
         <main className="px-4 py-6 lg:px-8">
           <Outlet />

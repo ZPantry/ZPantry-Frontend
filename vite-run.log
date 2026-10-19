@@ -1,0 +1,10 @@
+
+> z-pantry-landing-page@1.0.0 dev
+> vite --host 0.0.0.0
+
+
+  VITE v6.4.3  ready in 372 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: http://192.168.100.154:5173/
+  ➜  Network: http://172.19.224.1:5173/
