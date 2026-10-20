@@ -25,7 +25,7 @@ function normalizeSession(data, remember = true) {
     name: data.fullName,
     fullName: data.fullName,
     email: data.email,
-    role: data.role || "user",
+    role: (data.role || "user").toLowerCase(),
     accessToken: data.accessToken,
     refreshToken: data.refreshToken,
     expiresAt: data.expiresAt,
@@ -34,25 +34,17 @@ function normalizeSession(data, remember = true) {
 }
 
 apiClient.interceptors.request.use((config) => {
+  if (config.url === "/api/Auth/login" || config.url === "/api/Auth/google" ||
+      config.url === "/api/Auth/register" || config.url === "/api/Auth/verify-otp" ||
+      config.url === "/api/Auth/refresh-token") {
+    return config;
+  }
   const session = getAuthSession();
   if (session?.accessToken) {
     config.headers.Authorization = `Bearer ${session.accessToken}`;
   }
   return config;
 });
-
-function decodeGoogleCredential(credential) {
-  const payload = credential?.split(".")?.[1];
-  if (!payload) throw new Error("Google credential không hợp lệ.");
-  const normalized = payload.replace(/-/g, "+").replace(/_/g, "/");
-  const json = decodeURIComponent(
-    atob(normalized)
-      .split("")
-      .map((char) => `%${`00${char.charCodeAt(0).toString(16)}`.slice(-2)}`)
-      .join("")
-  );
-  return JSON.parse(json);
-}
 
 export const authService = {
   current() {
@@ -74,44 +66,13 @@ export const authService = {
     }
   },
   async loginWithGoogle(credential) {
-    const profile = decodeGoogleCredential(credential);
-    if (!profile.email) throw new Error("Không thể đọc email từ tài khoản Google.");
-
-    const users = read(keys.users, []);
-    const existing = users.find((user) => user.email.toLowerCase() === profile.email.toLowerCase());
-    const user =
-      existing ||
-      {
-        id: `google-${profile.sub || Date.now()}`,
-        name: profile.name || profile.email,
-        email: profile.email,
-        password: "",
-        role: "user",
-        status: "active",
-        provider: "google",
-        createdAt: new Date().toISOString().slice(0, 10),
-        profile: {
-          fullName: profile.name || profile.email,
-          avatarUrl: profile.picture,
-          onboarded: false
-        }
-      };
-
-    if (existing) {
-      write(
-        keys.users,
-        users.map((item) =>
-          item.id === existing.id
-            ? { ...item, provider: item.provider || "google", profile: { ...item.profile, avatarUrl: item.profile?.avatarUrl || profile.picture } }
-            : item
-        )
-      );
-    } else {
-      write(keys.users, [...users, user]);
+    try {
+      const response = await apiClient.post("/api/Auth/google", { idToken: credential });
+      if (!response.data?.success || !response.data?.data) throw new Error(response.data?.message || "Đăng nhập Google thất bại.");
+      return write(keys.auth, normalizeSession(response.data.data));
+    } catch (error) {
+      throw new Error(getApiMessage(error, "Đăng nhập Google thất bại."));
     }
-
-    const session = { id: user.id, name: user.name, email: user.email, role: user.role, provider: "google", remember: true };
-    return write(keys.auth, session);
   },
   async register({ fullName, email, password }) {
     try {

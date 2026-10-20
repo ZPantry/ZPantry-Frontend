@@ -30,7 +30,7 @@ export function GoogleSignInButton({ label = "Tiếp tục với Google", google
     try {
       const session = await authService.loginWithGoogle(response.credential);
       toast.show("Đăng nhập Google thành công.");
-      navigate(session.role === "admin" ? "/admin" : "/dashboard");
+      navigate(["admin", "super_admin"].includes(session.role) ? "/admin" : "/dashboard");
     } catch (error) {
       toast.show(error.message, "error");
     }

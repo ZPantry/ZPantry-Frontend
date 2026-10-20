@@ -1,0 +1,11 @@
+
+> z-pantry-landing-page@1.0.0 dev
+> vite --host 127.0.0.1
+
+
+  VITE v6.4.3  ready in 1446 ms
+
+  ➜  Local:   http://127.0.0.1:5173/
+6:58:19 PM [vite] (client) hmr update /src/styles/tailwind.css, /src/pages/user/OnboardingPage.jsx, /src/pages/meals/MealSuggestionsPage.jsx, /src/pages/auth/LoginPage.jsx, /src/pages/PaymentReturnPage.jsx, /src/routes/ProtectedRoute.jsx, /src/pages/meals/MealDetailPage.jsx, /src/pages/meals/MealPlanPage.jsx, /src/pages/auth/RegisterPage.jsx, /src/components/layout/AppLayout.jsx, /src/pages/profile/EditProfilePage.jsx, /src/pages/profile/ProfilePage.jsx, /src/pages/admin/AdminUsersPage.jsx, /src/pages/ingredients/IngredientPage.jsx, /src/pages/user/UserDashboard.jsx, /src/pages/admin/ServiceHealthPage.jsx, /src/pages/admin/AdminRevenuePage.jsx, /src/pages/admin/AdminDashboard.jsx, /src/pages/admin/AdminCatalogPage.jsx, /src/components/auth/GoogleSignInButton.jsx
+7:11:08 PM [vite] (client) hmr update /src/styles/tailwind.css, /src/pages/admin/AdminCatalogPage.jsx
+7:11:21 PM [vite] (client) hmr update /src/pages/admin/AdminCatalogPage.jsx, /src/styles/tailwind.css

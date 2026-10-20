@@ -1,5 +1,5 @@
-import { Eye, EyeOff } from "lucide-react";
-import { useState } from "react";
+import { Eye, EyeOff, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { GoogleSignInButton } from "../../components/auth/GoogleSignInButton";
 import { Field, inputClass } from "../../components/ui/Fields";
@@ -13,8 +13,14 @@ export function LoginPage() {
   const [errors, setErrors] = useState({});
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [legalDocument, setLegalDocument] = useState(null);
+  const legalDialog = useRef(null);
   const navigate = useNavigate();
   const toast = useToast();
+
+  useEffect(() => {
+    if (legalDocument) legalDialog.current?.showModal();
+  }, [legalDocument]);
 
   const submit = async (event) => {
     event.preventDefault();
@@ -28,7 +34,7 @@ export function LoginPage() {
     try {
       const session = await authService.login(form.email, form.password, form.remember);
       toast.show("Đăng nhập thành công.");
-      navigate(["admin", "super_admin"].includes(session.role) ? "/admin/service-health" : "/dashboard");
+      navigate(["admin", "super_admin"].includes(session.role) ? "/admin" : "/dashboard");
     } catch (error) {
       toast.show(error.message, "error");
     } finally {
@@ -108,6 +114,20 @@ export function LoginPage() {
           Đăng ký ngay
         </Link>
       </p>
+      <p className="mt-auto pt-5 text-center text-xs leading-5 text-slate-500">
+        Khi nhấn &quot;Đăng nhập&quot;, bạn đồng ý với{" "}
+        <button type="button" className="text-orange-700 underline underline-offset-2" onClick={() => setLegalDocument("terms")}>Terms of Service</button>
+        {" "}của Z-Pantry và xác nhận{" "}
+        <a className="text-orange-700 underline underline-offset-2" href="/chinh_sach_quyen_rieng_tu_z_pantry.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+        {" "}của Z-Pantry áp dụng cho bạn.
+      </p>
+      <dialog ref={legalDialog} onClose={() => setLegalDocument(null)} aria-label="Terms of Service" className="w-[min(94vw,820px)] max-w-none rounded-2xl border-0 bg-white p-0 text-black shadow-2xl backdrop:bg-slate-950/60" style={{ fontFamily: '"Times New Roman", Times, serif' }}>
+        <div className="flex items-center justify-between border-b border-slate-200 px-4 py-3">
+          <h3 className="text-base font-bold text-black">Terms of Service</h3>
+          <button type="button" aria-label="Đóng" className="rounded-lg p-2 text-black hover:bg-slate-100" onClick={() => legalDialog.current?.close()}><X size={20} /></button>
+        </div>
+        {legalDocument && <iframe title="Terms of Service" src="/terms.html" className="h-[min(75vh,680px)] w-full border-0" />}
+      </dialog>
     </AuthShell>
   );
 }
