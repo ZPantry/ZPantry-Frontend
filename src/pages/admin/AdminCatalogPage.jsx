@@ -83,6 +83,19 @@ export function AdminCatalogPage() {
     }
   };
 
+  const viewRecipe = async (item) => {
+    setDetailLoading(true);
+    setDetail(null);
+    setError("");
+    try {
+      setDetail(await adminCatalogService.getRecipe(item.id));
+    } catch (cause) {
+      setError(cause.response?.data?.message || cause.message);
+    } finally {
+      setDetailLoading(false);
+    }
+  };
+
   const save = async (event) => {
     event.preventDefault();
     if (!form.name.trim()) return setError("Vui lòng nhập tên.");
@@ -153,9 +166,28 @@ export function AdminCatalogPage() {
     </div>
     {!loading && <p className="mb-4 text-sm font-bold text-slate-600">Tổng số {kind === "ingredients" ? "nguyên liệu" : "công thức"}: {items[kind].length}</p>}
     {error && <p role="alert" className="mb-4 rounded-xl bg-red-50 p-4 text-red-700">{error}</p>}
-    {detailLoading && <p>Đang tải chi tiết nguyên liệu...</p>}
+    {detailLoading && <p>Đang tải chi tiết {kind === "ingredients" ? "nguyên liệu" : "công thức"}...</p>}
     {detail && !form ? <section className="rounded-[24px] border border-orange-100 bg-white p-5 shadow-sm">
       <h2 className="font-heading text-2xl font-black">{detail.name}</h2>
+      {kind === "recipes" ? <>
+        {detail.imageUrl && <img src={detail.imageUrl} alt={detail.name} className="mt-4 h-48 w-full rounded-2xl object-contain" />}
+        <p className="mt-3 text-slate-700">{detail.description || "Chưa có mô tả."}</p>
+        <dl className="mt-5 grid gap-3 text-sm sm:grid-cols-2">
+          {[["Thời gian nấu", detail.cookingTimeMinutes, "phút"], ["Độ khó", detail.difficulty],
+            ["Khẩu phần", detail.servingSize], ["Nguồn", detail.sourceType]].map(([label, value, unit]) =>
+            <div key={label} className="rounded-xl bg-orange-50 p-3"><dt className="text-slate-500">{label}</dt><dd className="font-black">{value ?? "Chưa có"} {value == null ? "" : unit}</dd></div>)}
+        </dl>
+        <h3 className="mt-5 font-bold">Nguyên liệu</h3>
+        {detail.ingredients?.length ? <ul className="mt-2 grid gap-2">
+          {detail.ingredients.map((ingredient) => <li key={ingredient.ingredientId} className="rounded-xl bg-orange-50 p-3 text-sm">
+            <strong>{ingredient.ingredientName || "Nguyên liệu"}</strong> · {ingredient.quantity ?? "—"} {ingredient.unit || ""}
+            {ingredient.isRequired ? " · Bắt buộc" : ""}{ingredient.note ? ` · ${ingredient.note}` : ""}
+          </li>)}
+        </ul> : <p className="mt-2 text-sm text-slate-500">Chưa có nguyên liệu.</p>}
+        <h3 className="mt-5 font-bold">Hướng dẫn</h3>
+        <p className="mt-2 whitespace-pre-line text-sm text-slate-700">{detail.instructionText || "Chưa có hướng dẫn."}</p>
+        <p className="mt-4 text-sm"><strong>Dị ứng:</strong> {detail.allergens?.length ? [...detail.allergens].join(", ") : "Không ghi nhận"}</p>
+      </> : <>
       <p className="mt-1 text-sm text-slate-500">{detail.category || "Khác"} · Đơn vị: {detail.unit || "Chưa có"}</p>
       {detail.imageUrl && <img src={detail.imageUrl} alt={detail.name} className="mt-4 h-40 w-full rounded-2xl object-contain" />}
       <dl className="mt-5 grid gap-3 text-sm sm:grid-cols-2">
@@ -165,6 +197,7 @@ export function AdminCatalogPage() {
       </dl>
       <p className="mt-4 text-sm"><strong>Dị ứng:</strong> {detail.allergens?.length ? detail.allergens.join(", ") : "Không ghi nhận"}</p>
       <p className="mt-2 text-sm"><strong>Tên gọi khác:</strong> {detailAliases.length ? detailAliases.map((alias) => alias.aliasName).join(", ") : "Chưa có"}</p>
+      </>}
       <div className="mt-5 flex gap-2"><button type="button" onClick={() => begin(detail)} className="rounded-xl bg-slate-950 px-4 py-2 font-bold text-white">Sửa</button>
         <button type="button" onClick={() => setDetail(null)} className="rounded-xl border px-4 py-2 font-bold">Quay lại</button></div>
     </section> : form ? <form onSubmit={save} className="grid gap-4 rounded-[24px] border border-orange-100 bg-white p-5 shadow-sm">
@@ -218,7 +251,7 @@ export function AdminCatalogPage() {
         {filtered.length === 0 && !error && <p>Chưa có dữ liệu.</p>}
         {filtered.map((item) => <article key={item.id} className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-orange-100 bg-white p-4 shadow-sm">
           <div><h3 className="font-bold">{item.name}</h3><p className="text-sm text-slate-500">{kind === "ingredients" ? `${item.category || "Khác"} · ${item.unit || ""}` : `${item.cookingTimeMinutes || 0} phút · ${item.ingredients?.length || 0} nguyên liệu`}</p></div>
-          <div className="flex gap-2">{kind === "ingredients" && <button onClick={() => viewIngredient(item)} className="rounded-xl border px-4 py-2 font-bold">Chi tiết</button>}
+          <div className="flex gap-2"><button type="button" onClick={() => kind === "ingredients" ? viewIngredient(item) : viewRecipe(item)} className="rounded-xl border px-4 py-2 font-bold">Chi tiết</button>
             <button onClick={() => begin(item)} className="rounded-xl border px-4 py-2 font-bold">Sửa</button>
             <button onClick={() => remove(item)} className="rounded-xl bg-red-50 px-4 py-2 font-bold text-red-600">Xóa</button></div>
         </article>)}

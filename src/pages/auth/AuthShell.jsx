@@ -69,11 +69,11 @@ export function AuthShell({ title, subtitle, children }) {
 
         <div className="auth-form-panel relative overflow-hidden p-5 sm:p-6">
           <div className="auth-form-bg" aria-hidden="true" />
-          <div className="relative z-10">
+          <div className="relative z-10 flex h-full flex-col">
             <p className="text-[11px] font-black uppercase tracking-[0.17em] text-orange-500">Chào mừng đến Z-Pantry</p>
             <h2 className="mt-2 font-heading text-2xl font-black leading-tight text-slate-950 sm:text-[28px]">{title}</h2>
             <p className="mt-2 max-w-xl text-sm leading-5 text-slate-600">{subtitle}</p>
-            <div className="mt-4">{children}</div>
+            <div className="mt-4 flex flex-1 flex-col">{children}</div>
           </div>
         </div>
       </section>

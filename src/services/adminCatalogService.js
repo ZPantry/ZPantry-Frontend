@@ -49,6 +49,10 @@ async function getIngredient(id) {
   return unwrap(await apiClient.get(`/api/ingredients/${encodeURIComponent(id)}`)).data;
 }
 
+async function getRecipe(id) {
+  return unwrap(await apiClient.get(`/api/recipes/${encodeURIComponent(id)}`)).data;
+}
+
 async function uploadImage(file) {
   const body = new FormData();
   body.append("file", file);
@@ -67,4 +71,4 @@ async function removeAlias(id, aliasId) {
   unwrap(await apiClient.delete(`/api/ingredients/${encodeURIComponent(id)}/aliases/${encodeURIComponent(aliasId)}`));
 }
 
-export const adminCatalogService = { all, save, remove, getIngredient, uploadImage, aliases, addAlias, removeAlias };
+export const adminCatalogService = { all, save, remove, getIngredient, getRecipe, uploadImage, aliases, addAlias, removeAlias };

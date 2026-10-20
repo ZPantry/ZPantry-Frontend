@@ -34,6 +34,11 @@ function normalizeSession(data, remember = true) {
 }
 
 apiClient.interceptors.request.use((config) => {
+  if (config.url === "/api/Auth/login" || config.url === "/api/Auth/google" ||
+      config.url === "/api/Auth/register" || config.url === "/api/Auth/verify-otp" ||
+      config.url === "/api/Auth/refresh-token") {
+    return config;
+  }
   const session = getAuthSession();
   if (session?.accessToken) {
     config.headers.Authorization = `Bearer ${session.accessToken}`;
