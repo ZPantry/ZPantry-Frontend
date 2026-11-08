@@ -11,6 +11,7 @@ export const adminAnalyticsService = {
   events: (days = 30) => get("/api/admin/analytics/events", { days }),
   screens: (days = 30) => get("/api/admin/analytics/screens", { days }),
   recognition: () => get("/api/admin/analytics/ai-recognition"),
+  recipeFeedback: () => get("/api/admin/analytics/recipe-feedback"),
   revenue: (days = 30) => get("/api/admin/analytics/revenue", { days }),
   transactions: (status) => get("/api/admin/analytics/transactions", status ? { status } : undefined)
 };

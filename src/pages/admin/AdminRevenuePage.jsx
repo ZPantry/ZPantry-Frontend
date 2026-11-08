@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { PageHeader } from "../../components/ui/Fields";
-import { adminMonitoringService } from "../../services/adminMonitoringService";
+import { adminAnalyticsService } from "../../services/adminAnalyticsService";
 
 const money = new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND", maximumFractionDigits: 0 });
 
@@ -13,7 +13,24 @@ export function AdminRevenuePage() {
     setLoading(true);
     setError("");
     try {
-      setReport(await adminMonitoringService.revenue());
+      const [overview, dailyRevenue, transactions] = await Promise.all([
+        adminAnalyticsService.overview(30),
+        adminAnalyticsService.revenue(30),
+        adminAnalyticsService.transactions("PAID")
+      ]);
+      const now = new Date();
+      const today = now.toLocaleDateString("en-CA", { timeZone: "Asia/Ho_Chi_Minh" });
+      const month = today.slice(0, 7);
+      const sum = (rows) => rows.reduce((total, row) => total + Number(row.revenue_vnd || 0), 0);
+      setReport({
+        todayVnd: sum(dailyRevenue.filter((row) => row.day === today)),
+        monthVnd: sum(dailyRevenue.filter((row) => String(row.day).startsWith(month))),
+        allTimeVnd: Number(overview.paidRevenueVnd || 0),
+        paidTransactions: Number(overview.transactions || 0),
+        recentPayments: transactions.slice(0, 50).map((row) => ({
+          id: row.id, orderId: row.merchant_order_id, amountVnd: row.amount_vnd, paidAt: row.paid_at
+        }))
+      });
     } catch (cause) {
       setError(cause.response?.data?.message || cause.message);
     } finally {
